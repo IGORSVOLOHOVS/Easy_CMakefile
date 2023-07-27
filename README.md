@@ -40,58 +40,68 @@ project_root/
 cmake_minimum_required(VERSION 3.20)
 project(test_cmake CXX)
 
-# Specify the path to the vcpkg CMake toolchain file
-set(CMAKE_TOOLCHAIN_FILE C:/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake)
+# Переменная VCPKG_PATH
+set(VCPKG_PATH "C:/Users/User/.clion-vcpkg/vcpkg")
 
-# Set the C++ standard to C++20
+# Указываем путь к файлу CMakeLists.txt для vcpkg
+set(CMAKE_TOOLCHAIN_FILE ${VCPKG_PATH}/scripts/buildsystems/vcpkg.cmake)
+
+# Устанавливаем стандарт C++ на C++20
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Add any additional compiler flags or definitions if needed
-# For example, you can define -DCURL_STATICLIB=ON like this:
-# add_compile_definitions(-DCURL_STATICLIB=ON)
+set(-DCURL_STATICLIB=ON)
 
-# Include directories for header files from vcpkg packages
+
+# Проверяем и создаем директории bin, lib, include, src
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/src)
+
+# Указываем директории с заголовочными файлами и библиотеками из vcpkg
 include_directories(
-    C:/vcpkg/vcpkg/installed/x64-windows/include
+    ${VCPKG_PATH}/installed/x64-windows/include
 )
 
-# Link directories for library files from vcpkg packages
 link_directories(
-    C:/vcpkg/vcpkg/installed/x64-windows/lib
+    ${VCPKG_PATH}/installed/x64-windows/lib
 )
 
-# Add the path to your own source files (cpp)
+# Добавляем путь к собственным исходным файлам (cpp)
 file(GLOB_RECURSE SOURCES
     "src/*.cpp"
 )
 
-# Add the path to your own header files (h)
+# Добавляем путь к заголовочным файлам (h)
 file(GLOB_RECURSE HEADERS
     "include/*.h"
 )
 
-# Create the executable (or library)
+# Создаем исполняемый файл (или библиотеку)
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
-# If you want to build a static library instead of an executable:
+# Если вам нужно собрать статическую библиотеку вместо исполняемого файла:
 # add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
 
-# Link the necessary libraries from vcpkg
+# Линковка с библиотеками из vcpkg
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    # List the libraries from vcpkg that you need, if any
-    # For example: library1, library2, ...
+    # Укажите библиотеки из vcpkg, которые вам нужны
+#    library1
+#    library2
+    # ...
     libcurl
 )
 
-# If you are building a static library, link it like this:
-# target_link_libraries(${PROJECT_NAME} PRIVATE
+# Если вы собираете статическую библиотеку, линкуйте ее так:
+target_link_libraries(${PROJECT_NAME} PRIVATE
 #     library1
 #     library2
 #     # ...
-#     libcurl
-# )
+    libcurl
+)
+
 ```
 
 ## Building the Project
