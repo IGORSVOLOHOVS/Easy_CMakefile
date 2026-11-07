@@ -1,116 +1,43 @@
-# Easy CMakefile Example
+# easy-cmakefile
 
-This is an example of an easy-to-understand CMakeLists.txt file for a C++ project using the vcpkg package manager. The CMakeLists.txt file helps you build your C++ project and manage external dependencies effortlessly.
+An annotated `CMakeLists.txt` from July 2023, written as an easy-to-read starting
+point for a C++20 project that takes its libraries from vcpkg, with one example
+source file. It is a template to copy from, not a program.
 
-## Prerequisites
+## What is here
 
-Make sure you have the following installed on your system:
+- `CMakeLists.txt` sets C++20, creates `bin`, `lib`, `include` and `src` in the
+  build folder, takes every `src/*.cpp` and `include/*.h` into one executable
+  named `test_cmake`, and links it with `libcurl`. Its comments are in Russian and
+  show where to switch to a static library or add more vcpkg libraries.
+- `src/main.cpp` is the example: it sends one GET request with libcurl to
+  `https://api.example.com/data`, a placeholder address, and prints the answer.
+- `.vscode/` holds the tasks and launch settings the Easy C++ Projects extension
+  wrote: build with `make` in `build/`, then run `build/main`.
+- The old README explained the file section by section; this one replaces it.
 
-- CMake (version 3.20 or higher)
-- vcpkg (a package manager for C++ libraries)
+Three things to know before copying it:
 
-## Project Structure
+- The vcpkg path is fixed to `C:/Users/User/.clion-vcpkg/vcpkg`, one machine's
+  folder.
+- `CMAKE_TOOLCHAIN_FILE` is set after `project()`, where CMake no longer reads it,
+  so the vcpkg toolchain is not used; the explicit include and library folders
+  are what find curl.
+- `set(-DCURL_STATICLIB=ON)` sets nothing: it is not a variable name.
 
-Your project directory should have the following structure:
+Nothing here is built or tested in this lab.
 
-```
-project_root/
-  |- CMakeLists.txt
-  |- include/
-  |    |- ...  # Header files
-  |
-  |- src/
-  |    |- ...  # Source files
-  |
-  |- lib/
-  |    |- ...  # Additional libraries (optional)
-  |
-  |- bin/
-  |    |- ...  # Executables (after building)
-  |
-  |- build/
-  |    |- ...  # Build files (create this directory before running CMake)
-  |
-  |- ...        # Other project files
-```
+## Working on it
 
-## CMakeLists.txt
+This repository ships no program. `.\recipe.ps1` is still its whole interface:
+`.\recipe.ps1 test` runs pytest and ruff over `.claude`, and `.\recipe.ps1 info`
+prints the metadata. The other verbs print `nothing to <verb>`. `CLAUDE.md`
+holds the rules.
 
-```cmake
-cmake_minimum_required(VERSION 3.20)
-project(test_cmake CXX)
+## License
 
-# Переменная VCPKG_PATH
-set(VCPKG_PATH "C:/Users/User/.clion-vcpkg/vcpkg")
+MIT, as it stood on GitHub. See [LICENSE](LICENSE).
 
-# Указываем путь к файлу CMakeLists.txt для vcpkg
-set(CMAKE_TOOLCHAIN_FILE ${VCPKG_PATH}/scripts/buildsystems/vcpkg.cmake)
+## Lab requirements
 
-# Устанавливаем стандарт C++ на C++20
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-set(-DCURL_STATICLIB=ON)
-
-
-# Проверяем и создаем директории bin, lib, include, src
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/src)
-
-# Указываем директории с заголовочными файлами и библиотеками из vcpkg
-include_directories(
-    ${VCPKG_PATH}/installed/x64-windows/include
-)
-
-link_directories(
-    ${VCPKG_PATH}/installed/x64-windows/lib
-)
-
-# Добавляем путь к собственным исходным файлам (cpp)
-file(GLOB_RECURSE SOURCES
-    "src/*.cpp"
-)
-
-# Добавляем путь к заголовочным файлам (h)
-file(GLOB_RECURSE HEADERS
-    "include/*.h"
-)
-
-# Создаем исполняемый файл (или библиотеку)
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-
-# Если вам нужно собрать статическую библиотеку вместо исполняемого файла:
-# add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
-
-# Линковка с библиотеками из vcpkg
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    # Укажите библиотеки из vcpkg, которые вам нужны
-#    library1
-#    library2
-    # ...
-    libcurl
-)
-
-# Если вы собираете статическую библиотеку, линкуйте ее так:
-target_link_libraries(${PROJECT_NAME} PRIVATE
-#     library1
-#     library2
-#     # ...
-    libcurl
-)
-
-```
-
-## Building the Project
-
-1. Create a `build` directory in your project root: `mkdir build`
-2. Navigate to the `build` directory: `cd build`
-3. Generate the build files using CMake: `cmake ..`
-4. Build the project using your preferred build tool (e.g., make, ninja): `cmake --build .`
-
-After building, you'll find the executable (or static library) in the `bin` directory. If you have additional libraries, you can place them in the `lib` directory.
-
-That's it! With this simple CMakeLists.txt, you can manage your C++ project and external dependencies easily, making it easier to share your code with others and collaborate on GitHub. Happy coding!
+This repository complies with [revision 4.0.0](http://127.0.0.1:3000/igors-lab/software-requirements/src/tag/v4.0.0/BEST_REQUIREMENTS.md) of the lab requirements, except R-02 (#7), R-09 (#8), R-37 (#9), R-41 (#10), R-42 (#11).
