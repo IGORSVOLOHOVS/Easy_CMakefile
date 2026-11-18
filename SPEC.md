@@ -4,6 +4,29 @@ Reverse-engineered from commit `830f3cc` (branch `release`, tag `v1.0.0`) on
 2026-11-18. Every requirement below describes behaviour present in the files;
 nothing here is a plan. Documentation hub: [docs/README.md](docs/README.md).
 
+<!-- jira-sync:start -->
+Jira: KAN-97
+
+## Tasks
+
+This list is one ticket in Jira project KAN, [KAN-97](https://igorsvolohovs.atlassian.net/browse/KAN-97). Each line is a checkbox there: tick it in Jira and the sync ticks it here; add a checkbox there and it is appended here. Done items are the features described in section 3; open items are what the project declares but the code does not do yet.
+
+- [x] Build configuration (`CMakeLists.txt`) (section 3.1) <!-- spec-build-configuration-cmakelists-txt -->
+- [x] Example program (`src/main.cpp`) (section 3.2) <!-- spec-example-program-src-main-cpp -->
+- [x] Editor integration (`.vscode/`) (section 3.3) <!-- spec-editor-integration-vscode -->
+- [x] Repository interface (`recipe.ps1`) (section 3.4) <!-- spec-repository-interface-recipe-ps1 -->
+- [x] Git hooks (`.claude/hooks/git/`) (section 3.5) <!-- spec-git-hooks-claude-hooks-git -->
+- [x] Claude Code hooks (`.claude/hooks/`, `.claude/settings.json`) (section 3.6) <!-- spec-claude-code-hooks-claude-hooks-claude-settings-jso -->
+- [x] Gitea workflows (`.gitea/workflows/`) (section 3.7) <!-- spec-gitea-workflows-gitea-workflows -->
+- [ ] The executable is found in `bin` after building (declared, not implemented) <!-- spec-the-executable-is-found-in-bin-after-building -->
+- [ ] Libraries come through the vcpkg toolchain (declared, not implemented) <!-- spec-libraries-come-through-the-vcpkg-toolchain -->
+- [ ] Static curl (`CURL_STATICLIB`) (declared, not implemented) <!-- spec-static-curl-curlstaticlib -->
+- [ ] A separate link block for the static-library variant (declared, not implemented) <!-- spec-a-separate-link-block-for-the-static-library-varia -->
+- [ ] Wiki generation by `tools/wiki.py` (declared, not implemented) <!-- spec-wiki-generation-by-tools-wiki-py -->
+- [ ] Compliance with lab requirements revision 4.0.0 (declared, not implemented) <!-- spec-compliance-with-lab-requirements-revision-4-0-0 -->
+
+<!-- jira-sync:end -->
+
 ## 1. Purpose and scope
 
 The repository provides an annotated CMake configuration for a C++20
